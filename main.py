@@ -3,9 +3,9 @@
 Module Docstring
 """
 
-__author__ = "Your Name"
-__version__ = "0.1.0"
-__license__ = "MIT"
+__author__ = "TBD"
+__version__ = "0.0.1"
+__license__ = "TBD"
 
 
 def main():
