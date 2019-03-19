@@ -1,1 +1,3 @@
 # TrenazerLaparoskop
+
+Projekt Zespołowy
