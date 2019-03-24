@@ -29,9 +29,12 @@ def detect_blue(image):
 
     mask = cv2.inRange(image, lower_blue, upper_blue)
 
+    result = cv2.bitwise_and(image, image, mask=mask)
+    result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+
     cv2.imshow("mask", mask)
+    cv2.imshow("result", result)
     cv2.waitKey()
-    print("DUMMY")
 
 
 def detect_red_and_blue(image):
@@ -40,23 +43,27 @@ def detect_red_and_blue(image):
     mask0 = cv2.inRange(image, lower_blue, upper_blue)
 
     lower_red = np.array([0, 50, 50])
-    upper_red = np.array([10, 255, 255])
+    upper_red = np.array([5, 255, 255])
     mask1 = cv2.inRange(image, lower_red, upper_red)
 
-    lower_red = np.array([170, 50, 50])
+    lower_red = np.array([175, 50, 50])
     upper_red = np.array([180, 255, 255])
     mask2 = cv2.inRange(image, lower_red, upper_red)
 
     mask1 = cv2.bitwise_or(mask0, mask1)
     mask = cv2.bitwise_or(mask1, mask2)
 
+    result = cv2.bitwise_and(image, image, mask=mask)
+    result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+
     cv2.imshow("mask", mask)
+    cv2.imshow("result", result)
     cv2.waitKey()
-    print("DUMMY")
 
 
 def menu():
-    image = cv2.imread('tester.png', cv2.IMREAD_UNCHANGED)
+    image = cv2.imread('pills.jpg', cv2.IMREAD_UNCHANGED)
+    # image = cv2.imread('tester.png', cv2.IMREAD_UNCHANGED)
     img_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     print('Pick operation')
     print('B - Detect blue')
