@@ -15,9 +15,9 @@ def show_webcam(mirror=False):
             break  # Escape wyłącza podgląd
         elif key == ord('s'):  # Czeka na klawisz 's', po czym zapisuje obraz
             date = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-
-            cv2.imwrite(os.path.join("snap", date + '.png'), img)
-            break
+            if not os.path.exists('snap'):
+                os.mkdir('snap')
+            cv2.imwrite(os.path.join('snap', date + '.png'), img)
     cv2.destroyAllWindows()
 
 
