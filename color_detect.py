@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import os
+import sys
 
 
 def detect_red(image):
@@ -16,7 +18,7 @@ def detect_red(image):
     result = cv2.bitwise_and(image, image, mask=mask)
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
-    cv2.imshow("mask", mask)
+    # cv2.imshow("mask", mask)
     cv2.imshow("result", result)
 
     cv2.waitKey()
@@ -32,7 +34,7 @@ def detect_blue(image):
     result = cv2.bitwise_and(image, image, mask=mask)
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
-    cv2.imshow("mask", mask)
+    # cv2.imshow("mask", mask)
     cv2.imshow("result", result)
     cv2.waitKey()
 
@@ -56,14 +58,26 @@ def detect_red_and_blue(image):
     result = cv2.bitwise_and(image, image, mask=mask)
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
-    cv2.imshow("mask", mask)
+    # cv2.imshow("mask", mask)
     cv2.imshow("result", result)
     cv2.waitKey()
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def menu():
-    image = cv2.imread('pills.jpg', cv2.IMREAD_UNCHANGED)
-    # image = cv2.imread('tester.png', cv2.IMREAD_UNCHANGED)
+    # img_path = resource_path('pills.jpg')
+    img_path = resource_path('tester.png')
+    image = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
     img_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     print('Pick operation')
     print('B - Detect blue')
