@@ -172,3 +172,7 @@ fabric.properties
 
 # Libraries for build purposes
 *.dll
+
+# Files that change based on computer you run the project on
+\.idea/TrenazerLaparoskop\.iml
+\.idea/misc\.xml
