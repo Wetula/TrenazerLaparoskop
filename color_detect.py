@@ -18,11 +18,12 @@ def detect_red(image):
     result = cv2.bitwise_and(image, image, mask=mask)
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
+    return result
     # cv2.imshow("mask", mask)
-    cv2.imshow("result", result)
+    # cv2.imshow("result", result)
 
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+    # cv2.waitKey()
+    # cv2.destroyAllWindows()
 
 
 def detect_blue(image):
