@@ -16,7 +16,7 @@ def detect_red(image):
     mask = cv2.bitwise_or(mask1, mask2)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     return result
     # cv2.imshow("mask", mask)
@@ -33,7 +33,7 @@ def detect_blue(image):
     mask = cv2.inRange(image, lower_blue, upper_blue)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     # cv2.imshow("mask", mask)
     cv2.imshow("result", result)
@@ -57,7 +57,7 @@ def detect_red_and_blue(image):
     mask = cv2.bitwise_or(mask1, mask2)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     # cv2.imshow("mask", mask)
     cv2.imshow("result", result)
