@@ -36,8 +36,10 @@ def detect_blue(image):
     #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     # cv2.imshow("mask", mask)
-    cv2.imshow("result", result)
-    cv2.waitKey()
+    #cv2.imshow("result", result)
+    #cv2.waitKey()
+
+    return result
 
 
 def detect_red_and_blue(image):
@@ -60,9 +62,9 @@ def detect_red_and_blue(image):
     #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     # cv2.imshow("mask", mask)
-    cv2.imshow("result", result)
-    cv2.waitKey()
-
+    #cv2.imshow("result", result)
+    #cv2.waitKey()
+    return result
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
