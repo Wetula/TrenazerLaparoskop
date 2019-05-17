@@ -1,6 +1,8 @@
 import cv2
 from datetime import datetime
 import os
+from imutils.video import FileVideoStream
+
 
 
 def list_cameras():
@@ -33,7 +35,7 @@ def show_webcam(camera=0, mirror=False):
                 if not os.path.exists('snap'):
                     os.mkdir('snap')
                 cv2.imwrite(os.path.join('snap', date + '.png'), img)
-                
+
     cam.release()
     cv2.destroyAllWindows()
 
