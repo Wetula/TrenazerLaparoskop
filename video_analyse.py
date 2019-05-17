@@ -5,21 +5,8 @@ import camera
 import cv2
 import imutils
 
-
-class FileVideoStream:
-    def __init__(self, path, queue_size=128):
-        # initialize the file video stream along with the boolean
-        # used to indicate if the thread should be stopped or not
-        self.stream = cv2.VideoCapture(path)
-        self.stopped = False
-
-        # initialize the queue used to store frames read from
-        # the video file
-        self.Q = Queue(maxsize=queue_size)
-
-
 def play_video():
-    vid = cv2.VideoCapture('redBalls.webm')
+    vid = cv2.VideoCapture(0)
     while True:
         ret, frame = vid.read()
         if not ret:
