@@ -16,7 +16,7 @@ def main():
     image_frame = Frame(window, width=600, height=500)
     image_frame.grid(row=0, column=0, padx=10, pady=2)
 
-    source = 1
+    source = 0
     cap = GetVideo(source).start()
 
     main_label = Label(image_frame)
