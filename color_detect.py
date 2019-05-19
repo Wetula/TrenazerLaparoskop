@@ -16,14 +16,8 @@ def detect_red(image):
     mask = cv2.bitwise_or(mask1, mask2)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     return result
-    # cv2.imshow("mask", mask)
-    # cv2.imshow("result", result)
-
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
 
 
 def detect_blue(image):
@@ -33,11 +27,6 @@ def detect_blue(image):
     mask = cv2.inRange(image, lower_blue, upper_blue)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
-
-    # cv2.imshow("mask", mask)
-    #cv2.imshow("result", result)
-    #cv2.waitKey()
 
     return result
 
@@ -59,44 +48,4 @@ def detect_red_and_blue(image):
     mask = cv2.bitwise_or(mask1, mask2)
 
     result = cv2.bitwise_and(image, image, mask=mask)
-    #result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
-
-    # cv2.imshow("mask", mask)
-    #cv2.imshow("result", result)
-    #cv2.waitKey()
     return result
-
-def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-
-def menu():
-    # img_path = resource_path('pills.jpg')
-    img_path = resource_path('tester.png')
-    image = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
-    img_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    print('Pick operation')
-    print('B - Detect blue')
-    print('R - Detect red')
-    print('D - Detect both')
-    pick = input('Pick: ')
-    if pick == 'B' or pick == 'b':
-        detect_blue(img_hsv)
-    elif pick == 'R' or pick == 'r':
-        detect_red(img_hsv)
-    elif pick == 'D' or pick == 'd':
-        detect_red_and_blue(img_hsv)
-    else:
-        print('Wrong input.')
-
-
-if __name__ == "__main__":
-    """ This is executed when run from the command line """
-    menu()
