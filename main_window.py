@@ -27,13 +27,17 @@ class Frames(object):
         for i in range(10):
             cap = cv2.VideoCapture(i)
             if cap is None or not cap.isOpened():
-                print('Warning: unable to open video source: ', i)
+                pass
             else:
                 self.valid_cams.append(i)
 
     def pick_camera(self):
         pass
         # TODO: Window with camera list
+
+    def calibrate_camera(self):
+        pass
+        # TODO: Window to calibrate camera
 
     def main_window(self):
         self.root.title("Trenażer operacji laparoskopowej")
@@ -49,9 +53,9 @@ class Frames(object):
         def show_frame():
             frame = self.cap.frame
             frame = cv2.flip(frame, 1)
-            frame = cv2.GaussianBlur(frame, (9, 9), 0)
+            #frame = cv2.GaussianBlur(frame, (9, 9), 0)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            frame = detect_red(frame)
+            #frame = detect_red(frame)
             frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
             img = Image.fromarray(cv2image)
@@ -62,17 +66,17 @@ class Frames(object):
 
         menu = Menu(self.root)
         menu_item = Menu(menu, tearoff=0)
-        menu_item.add_command(label='New')
+        #menu_item.add_command(label='Nowy')
         # menu_item.add_separator()
-        menu_item.add_command(label='Edit')
-        menu.add_cascade(label='File', menu=menu_item)
+        #menu_item.add_command(label='Edytuj')
+        menu_item.add_command(label='Zamknij')
+        menu.add_cascade(label='Plik', menu=menu_item)
 
         # my_canvas = Canvas(window, width=cap.width(), height=cap.height())
         #  my_canvas.pack()
 
         self.root.config(menu=menu)
         show_frame()
-        # cap.stop()
 
     def __del__(self):
         self.cap.stop()
@@ -80,6 +84,7 @@ class Frames(object):
 
 if __name__ == "__main__":
     app = Frames()
+    app.list_cameras()
     app.main_window()
     app.root.mainloop()
     del app
