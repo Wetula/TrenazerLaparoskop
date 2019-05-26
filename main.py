@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
-"""
-Module Docstring
-"""
 
-__author__ = "TBD"
-__version__ = "0.0.1"
-__license__ = "TBD"
+__version__ = "0.3.1"
 
 
 def main():
-    """ Main entry point of the app """
-    print("hello world")
+    pass
 
 
 if __name__ == "__main__":

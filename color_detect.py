@@ -19,7 +19,6 @@ def detect_red(image):
 
     return result
 
-
 def detect_blue(image):
     lower_blue = np.array([100, 150, 0])
     upper_blue = np.array([140, 255, 255])
@@ -49,3 +48,5 @@ def detect_red_and_blue(image):
 
     result = cv2.bitwise_and(image, image, mask=mask)
     return result
+
+
