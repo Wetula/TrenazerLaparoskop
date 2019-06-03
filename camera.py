@@ -1,8 +1,6 @@
 import cv2
 from datetime import datetime
 import os
-from imutils.video import FileVideoStream
-
 
 
 def list_cameras():

@@ -6,11 +6,11 @@ class Exercise(object):
         self.userId = 0
 
 
-class ExerciseList(object)
-    
+class ExerciseList(object):
+
     def __init__(self):
         self.exercise_list = []
-        
+
     def save_to_file(self):
         pass
         # TODO: Zapis do pliku
@@ -18,6 +18,7 @@ class ExerciseList(object)
     def load_from_file(self):
         pass
         # TODO: Wczytywanie z pliku
+
 
 if __name__ == "__main__":
     exit(10)
