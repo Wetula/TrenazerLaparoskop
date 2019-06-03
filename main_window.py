@@ -91,7 +91,7 @@ class Frames(object):
         cal_window.attributes("-topmost", True)
         cal_window.grab_set()
         main_label = Label(cal_window)
-        main_label.pack()
+        # main_label.pack()
 
         label1 = Label(cal_window, text="Zrób ujęcie szachownicy kalibracyjnej.")
         label2 = Label(cal_window, text="Postaraj się, by wypełniła cały kadr.")
@@ -99,12 +99,14 @@ class Frames(object):
         button2 = Button(cal_window, text="Zamknij", command=cal_window.destroy)
         label1.pack()
         label2.pack()
+        main_label.pack()
         button1.pack()
         button2.pack()
         show_frame()
 
         self.root.wait_window(cal_window)
         cap.stop()
+        del cap
 
     def calibrate_camera(self):
 
@@ -146,12 +148,15 @@ class Frames(object):
         # TODO: Window to calibrate camera
 
     def main_window(self):
+        # print("MAIN WINDOW STARTING")
         self.root.title("Trenażer operacji laparoskopowej")
 
         image_frame = Frame(self.root, width=600, height=500)
         image_frame.grid(row=0, column=0, padx=10, pady=2)
 
+        # print("GETTING CAMERA")
         self.cap = GetVideo(self.source).start()
+        # print("CAMERA GOT")
 
         main_label = Label(image_frame)
         main_label.grid(row=0, column=0)
@@ -173,17 +178,17 @@ class Frames(object):
             main_label.configure(image=img_tk)
             main_label.after(10, show_frame)
 
-        # menu = Menu(self.root)
-        # menu_item = Menu(menu, tearoff=0)
-        # # menu_item.add_command(label='Nowy')
-        # # menu_item.add_separator()
-        # # menu_item.add_command(label='Edytuj')
-        # menu_item.add_command(label='Zamknij')
-        # menu.add_cascade(label='Plik', menu=menu_item)
-        #
-        # # my_canvas = Canvas(window, width=cap.width(), height=cap.height())
-        #  my_canvas.pack()
+        menu = Menu(self.root)
+        menu_item = Menu(menu, tearoff=0)
+        # menu_item.add_command(label='Nowy')
+        # menu_item.add_separator()
+        # menu_item.add_command(label='Edytuj')
+        menu_item.add_command(label='Zamknij')
+        menu.add_cascade(label='Plik', menu=menu_item)
 
+        # my_canvas = Canvas(window, width=cap.width(), height=cap.height())
+        # my_canvas.pack()
+        #
         self.root.config(menu=menu)
         show_frame()
 
