@@ -6,7 +6,7 @@ import imutils
 import cv2
 from get_video import GetVideo
 from show_video import ShowVideo
-from color_detect import detect_red, detect_blue
+from color_detect import detect_red, detect_blue, detect_red_and_blue
 import numpy as np
 
 
@@ -158,19 +158,60 @@ class Frames(object):
         self.cap = GetVideo(self.source).start()
         # print("CAMERA GOT")
 
+        kernel_open = np.ones((5, 5))
+        kernel_close = np.ones((20, 20))
+
         main_label = Label(image_frame)
         main_label.grid(row=0, column=0)
 
         def show_frame():
             frame = self.cap.frame
             h, w = frame.shape[:2]
-            newcameramtx, roi = cv2.getOptimalNewCameraMatrix(app.mtx, app.dist, (w, h), 1, (w, h))
-            frame = cv2.undistort(frame, app.mtx, app.dist, None, newcameramtx)
+            new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(app.mtx, app.dist, (w, h), 1, (w, h))
+            frame = cv2.undistort(frame, app.mtx, app.dist, None, new_camera_matrix)
             # frame = cv2.flip(frame, -1)
-            # frame = cv2.GaussianBlur(frame, (9, 9), 0)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            frame_hsv = cv2.GaussianBlur(frame, (9, 9), 0)
+            frame_hsv = cv2.cvtColor(frame_hsv, cv2.COLOR_BGR2HSV)
+
+            mask_red = detect_red(frame_hsv)
+            mask_blue = detect_blue(frame_hsv)
+
+            mask_red_open = cv2.morphologyEx(mask_red, cv2.MORPH_OPEN, kernel_open)
+            mask_red_close = cv2.morphologyEx(mask_red_open, cv2.MORPH_CLOSE, kernel_close)
+            mask_red_erode = cv2.erode(mask_red_close, kernel_open, iterations=2)
+            mask_red_dilate = cv2.dilate(mask_red_erode, kernel_open, iterations=2)
+
+            mask_blue_open = cv2.morphologyEx(mask_blue, cv2.MORPH_OPEN, kernel_open)
+            mask_blue_close = cv2.morphologyEx(mask_blue_open, cv2.MORPH_CLOSE, kernel_close)
+            mask_blue_erode = cv2.erode(mask_blue_close, kernel_open, iterations=2)
+            mask_blue_dilate = cv2.dilate(mask_blue_erode, kernel_open, iterations=2)
+
+            im2_red, conts_red, hierarchy_red = cv2.findContours(
+                mask_red_dilate.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            im2_blue, conts_blue, hierarchy_blue = cv2.findContours(
+                mask_blue_dilate.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            cnts_red = imutils.grab_contours(conts_red)
+            center_red = None
+            cnts_blue = imutils.grab_contours(conts_blue)
+            center_blue = None
+
+            if len(cnts_red) > 0:
+                max_red = max(cnts_red, key=cv2.contourArena)
+                ((x_red, y_red), radius_red) = cv2.minEnclosingCircle(max_red)
+                M_red = cv2.moments(max_red)
+                center_red = (int(M_red["m10"] / M_red["m00"]), int(M_red["m01"] / M_red["m00"]))
+            if len(cnts_blue) > 0:
+                max_blue = max(cnts_blue, key=cv2.contourArena)
+                ((x_blue, y_blue), radius_blue) = cv2.minEnclosingCircle(max_blue)
+                M_blue = cv2.moments(max_blue)
+                center_blue = (int(M_blue["m10"] / M_blue["m00"]), int(M_blue["m01"] / M_blue["m00"]))
+            # cv2.drawContours(frame, conts, -1, (255, 0, 0), 3)
+            for i in range(len(conts)):
+                x, y, v, z = cv2.boundingRect(conts[i])
+                cv2.rectangle(frame, (x, y), (x + v, y + z), (0, 0, 255), 2)
             # frame = detect_red(frame)
-            frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
+            # frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
             img = Image.fromarray(cv2image)
             img_tk = ImageTk.PhotoImage(image=img)
