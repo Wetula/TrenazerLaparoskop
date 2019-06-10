@@ -186,30 +186,43 @@ class Frames(object):
             mask_blue_erode = cv2.erode(mask_blue_close, kernel_open, iterations=2)
             mask_blue_dilate = cv2.dilate(mask_blue_erode, kernel_open, iterations=2)
 
-            im2_red, conts_red, hierarchy_red = cv2.findContours(
+            conts_red = cv2.findContours(
                 mask_red_dilate.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            im2_blue, conts_blue, hierarchy_blue = cv2.findContours(
+            conts_blue = cv2.findContours(
                 mask_blue_dilate.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
             cnts_red = imutils.grab_contours(conts_red)
             center_red = None
-            cnts_blue = imutils.grab_contours(conts_blue)
-            center_blue = None
-
             if len(cnts_red) > 0:
-                max_red = max(cnts_red, key=cv2.contourArena)
+                max_red = max(cnts_red, key=cv2.contourArea)
                 ((x_red, y_red), radius_red) = cv2.minEnclosingCircle(max_red)
                 M_red = cv2.moments(max_red)
                 center_red = (int(M_red["m10"] / M_red["m00"]), int(M_red["m01"] / M_red["m00"]))
+
+                # cv2.circle(frame, (int(x_red), int(y_red)), int(radius_red),
+                #            (0, 255, 255), 2)
+                cv2.putText(frame, "RED x: {} y: {}".format(x_red, y_red),
+                            (10, frame.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.35, (0, 0, 255), 1)
+
+            cnts_blue = imutils.grab_contours(conts_blue)
+            center_blue = None
             if len(cnts_blue) > 0:
-                max_blue = max(cnts_blue, key=cv2.contourArena)
+                max_blue = max(cnts_blue, key=cv2.contourArea)
                 ((x_blue, y_blue), radius_blue) = cv2.minEnclosingCircle(max_blue)
                 M_blue = cv2.moments(max_blue)
                 center_blue = (int(M_blue["m10"] / M_blue["m00"]), int(M_blue["m01"] / M_blue["m00"]))
+
+                # cv2.circle(frame, (int(x_blue), int(y_blue)), int(radius_blue),
+                #            (0, 255, 255), 2)
+                cv2.putText(frame, "BLUE x: {}, y: {}".format(x_blue, y_blue),
+                            (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.35, (255, 0, 0), 1)
+
             # cv2.drawContours(frame, conts, -1, (255, 0, 0), 3)
-            for i in range(len(conts)):
-                x, y, v, z = cv2.boundingRect(conts[i])
-                cv2.rectangle(frame, (x, y), (x + v, y + z), (0, 0, 255), 2)
+            # for i in range(len(conts)):
+            #    x, y, v, z = cv2.boundingRect(conts[i])
+            #    cv2.rectangle(frame, (x, y), (x + v, y + z), (0, 0, 255), 2)
             # frame = detect_red(frame)
             # frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
